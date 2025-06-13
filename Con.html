@@ -3,10 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VVCE Connect - Senior Junior Collaboration Platform</title>
+    <title>LEARN-LOOP - Senior Junior Collaboration Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        @keyframes appEntry {
+            0% {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .app-entry {
+            animation: appEntry 0.9s ease-out forwards;
+        }
         .gradient-bg {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
@@ -48,7 +61,7 @@
             <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-white flex items-center justify-center">
                 <i class="fas fa-code text-3xl text-purple-600 code-icon"></i>
             </div>
-            <h1 class="text-2xl font-bold text-white">VVCE Connect</h1>
+            <h1 class="text-2xl font-bold text-white">LEARN-LOOP</h1>
             <p class="text-white mt-2">Loading the future of collaboration...</p>
         </div>
     </div>
@@ -57,7 +70,7 @@
     <div id="emailModal" class="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50 hidden">
         <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-8">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-800">VVCE Email Verification</h2>
+                <h2 class="text-2xl font-bold text-gray-800">LEARN-LOOP Email Verification</h2>
                 <button id="closeEmailModal" class="text-gray-500 hover:text-gray-700">
                     <i class="fas fa-times"></i>
                 </button>
@@ -116,7 +129,7 @@
     <div id="authModal" class="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50 hidden">
         <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-8">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-800">Welcome to VVCE Connect</h2>
+                <h2 class="text-2xl font-bold text-gray-800">Welcome to LEARN-LOOP</h2>
                 <button id="closeAuthModal" class="text-gray-500 hover:text-gray-700">
                     <i class="fas fa-times"></i>
                 </button>
@@ -124,7 +137,7 @@
             
             <div id="loginForm">
                 <div class="mb-4">
-                    <label class="block text-gray-700 mb-2" for="loginEmail">VVCE Email</label>
+                    <label class="block text-gray-700 mb-2" for="loginEmail">LEARN-LOOP Email</label>
                     <input type="email" id="loginEmail" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="yourname@vvce.ac.in">
                     <p id="emailError" class="text-red-500 text-sm mt-1 hidden">Please use your @vvce.ac.in email</p>
                 </div>
@@ -142,7 +155,7 @@
                     <input type="text" id="registerName" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="John Doe">
                 </div>
                 <div class="mb-4">
-                    <label class="block text-gray-700 mb-2" for="registerEmail">VVCE Email</label>
+                    <label class="block text-gray-700 mb-2" for="registerEmail">LEARN-LOOP Email</label>
                     <input type="email" id="registerEmail" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="yourname@vvce.ac.in">
                     <p id="registerEmailError" class="text-red-500 text-sm mt-1 hidden">Please use your @vvce.ac.in email</p>
                 </div>
@@ -185,7 +198,7 @@
             <div class="container mx-auto px-4 py-4 flex justify-between items-center">
                 <div class="flex items-center space-x-2">
                     <i class="fas fa-code text-2xl"></i>
-                    <h1 class="text-xl font-bold">VVCE Connect</h1>
+                    <h1 class="text-xl font-bold">LEARN-LOOP</h1>
                 </div>
                 <div class="flex items-center space-x-4">
                     <div class="relative group">
@@ -655,10 +668,34 @@
 
         // State
         let currentUser = null;
+        
+        function generateRandomQuestions() {
+            const subjects = ['Python', 'Java', 'C++', 'Data Structures', 'Algorithms', 'Database', 'Networking', 'OS'];
+            const difficulties = ['basic', 'intermediate', 'advanced'];
+            const verbs = ['implement', 'solve', 'optimize', 'debug', 'understand', 'explain'];
+            
+            sampleQuestions = Array.from({length: 5}, (_, i) => ({
+                id: i+1,
+                title: `How to ${verbs[Math.floor(Math.random() * verbs.length)]} ${subjects[Math.floor(Math.random() * subjects.length)]} ${difficulties[Math.floor(Math.random() * difficulties.length)]} problem?`,
+                author: ["Rahul Sharma", "Priya Patel", "Amit Kumar", "Neha Gupta", "Sanjay Verma"][Math.floor(Math.random() * 5)],
+                time: `${Math.floor(Math.random() * 24)} hours ago`,
+                category: ['cse', 'ece', 'mech', 'math'][Math.floor(Math.random() * 4)],
+                content: `I'm working on a ${difficulties[Math.floor(Math.random() * difficulties.length)]} ${subjects[Math.floor(Math.random() * subjects.length)]} problem and need help with ${verbs[Math.floor(Math.random() * verbs.length)]} it. Can someone explain the best approach?`,
+                answers: Math.floor(Math.random() * 10),
+                views: Math.floor(Math.random() * 50),
+                upvotes: Math.floor(Math.random() * 15),
+                answered: Math.random() > 0.3
+            }));
+        }
         let currentCategory = 'all';
         let currentFilter = 'recent';
 
         // Functions
+        function getRandomEmoji() {
+            const emojis = ['😀', '😎', '🤓', '🧐', '👨‍💻', '👩‍💻', '🤖', '👾', '🐱', '🦊', '🐶', '🐼'];
+            return emojis[Math.floor(Math.random() * emojis.length)];
+        }
+
         function validateEmail(email) {
             return email.endsWith('@vvce.ac.in');
         }
@@ -781,7 +818,7 @@
                         <div class="flex justify-between items-start mb-1">
                             <div class="flex items-center">
                                 <div class="w-6 h-6 rounded-full ${message.isSenior ? 'bg-blue-100' : 'bg-gray-200'} mr-2 flex items-center justify-center">
-                                    <i class="fas fa-user text-xs ${message.isSenior ? 'text-blue-600' : 'text-gray-600'}"></i>
+                                    <span class="text-xs">${getRandomEmoji()}</span>
                                 </div>
                                 <span class="font-medium ${message.isSenior ? 'text-blue-700' : 'text-gray-700'}">${message.author}</span>
                             </div>
@@ -920,7 +957,8 @@
             userEmailDisplay.textContent = currentUser.email;
             userYearBranchDisplay.textContent = `${currentUser.year} ${currentUser.branch}`;
             
-            // Render questions
+            // Generate new random questions
+            generateRandomQuestions();
             renderQuestions();
         });
 
@@ -948,6 +986,7 @@
             
             // In a real app, you would register the user here
             const yearText = year === "1" ? "1st Year" : year === "2" ? "2nd Year" : year === "3" ? "3rd Year" : "4th Year";
+            app.classList.add('app-entry');
             currentUser = {
                 name: name,
                 email: email,
@@ -969,7 +1008,7 @@
             // Render questions
             renderQuestions();
             
-            alert("Registration successful! Welcome to VVCE Connect.");
+            alert("Registration successful! Welcome to LEARN-LOOP.");
         });
 
         showRegisterBtn.addEventListener('click', () => {
